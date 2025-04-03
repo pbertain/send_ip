@@ -1,0 +1,66 @@
+---
+- name: Ensure required packages are present
+  apt:
+    name:
+      - python3-venv
+      - logrotate
+    state: present
+    update_cache: true
+
+- name: Create virtualenv directory
+  file:
+    path: /opt/venv/send_ip
+    state: directory
+    mode: '0755'
+
+- name: Set up virtual environment
+  command: python3 -m venv /opt/venv/send_ip
+  args:
+    creates: /opt/venv/send_ip/bin/activate
+
+- name: Install pyprowl in virtualenv
+  pip:
+    name: pyprowl
+    virtualenv: /opt/venv/send_ip
+
+- name: Copy script to /usr/local/sbin
+  copy:
+    src: get_net_iface.py
+    dest: /usr/local/sbin/get_net_iface.py
+    mode: '0755'
+    owner: root
+    group: root
+
+- name: Create systemd service
+  template:
+    src: get_net_iface.service.j2
+    dest: /etc/systemd/system/get-net-iface.service
+
+- name: Create systemd timer
+  template:
+    src: get_net_iface.timer.j2
+    dest: /etc/systemd/system/get-net-iface.timer
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: true
+
+- name: Enable and start timer
+  systemd:
+    name: get-net-iface.timer
+    enabled: true
+    state: started
+
+- name: Configure logging file
+  file:
+    path: /var/log/nirdclub-tools.log
+    state: touch
+    mode: '0644'
+    owner: root
+    group: adm
+
+- name: Install logrotate config
+  template:
+    src: logrotate-nirdclub-tools.j2
+    dest: /etc/logrotate.d/nirdclub-tools
+    mode: '0644'
