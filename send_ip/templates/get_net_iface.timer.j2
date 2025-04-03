@@ -1,0 +1,9 @@
+[Unit]
+Description=Run get_net_iface.py at 08:30 Mon-Fri
+
+[Timer]
+OnCalendar=Mon..Fri 08:30
+Persistent=true
+
+[Install]
+WantedBy=timers.target

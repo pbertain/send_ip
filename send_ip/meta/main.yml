@@ -1,0 +1,19 @@
+---
+namespace: pbertain
+name: send_ip
+version: 1.0.0
+author: Paul Bertain <paulb+ansible_sendip@nird.club>
+description: >-
+  A role that gathers IPv6 addresses and system uptime, then sends a daily Prowl notification.
+dependencies: []
+license: MIT
+min_ansible_version: '2.11'
+platforms:
+  - name: Debian
+    versions:
+      - bookworm
+      - bullseye
+  - name: Ubuntu
+    versions:
+      - focal
+      - jammy

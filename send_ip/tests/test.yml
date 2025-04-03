@@ -1,0 +1,8 @@
+---
+- name: Test role application
+  hosts: localhost
+  become: true
+  vars_files:
+    - ../vault.yml
+  roles:
+    - pbertain.send_ip

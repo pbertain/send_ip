@@ -1,0 +1,7 @@
+[Unit]
+Description=Send daily IPv6 to Prowl
+
+[Service]
+Type=oneshot
+Environment="PROWL_API_KEY={{ prowl_api_key }}"
+ExecStart=/opt/venv/send_ip/bin/python /usr/local/sbin/get_net_iface.py >> /var/log/nirdclub-tools.log 2>&1

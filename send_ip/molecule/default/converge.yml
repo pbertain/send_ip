@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    prowl_api_key: "dummy_test_key"
+  roles:
+    - role: send_ip

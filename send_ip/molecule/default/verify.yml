@@ -1,0 +1,13 @@
+---
+- name: Verify uptime is being reported
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check if log file exists
+      stat:
+        path: /var/log/nirdclub-tools.log
+      register: log_stat
+
+    - name: Display log if exists
+      command: cat /var/log/nirdclub-tools.log
+      when: log_stat.stat.exists
